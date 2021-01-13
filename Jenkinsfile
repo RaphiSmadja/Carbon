@@ -14,6 +14,11 @@ pipeline {
                 bat 'mvn test'
             }
         }
+        post {
+            always {
+                junit 'build/reports/**/*.xml'
+            }
+        }
         stage ('Build') {
             steps {
                 bat 'mvn install'
