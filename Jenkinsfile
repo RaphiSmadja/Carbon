@@ -19,6 +19,8 @@ pipeline {
                 }
             }
         }
+        stage ('Publish') {
+        }
         stage ('Build') {
             steps {
                 bat 'mvn install'
