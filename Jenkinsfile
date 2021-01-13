@@ -13,10 +13,10 @@ pipeline {
             steps {
                 bat 'mvn test'
             }
-        }
-        post {
-            always {
-                junit 'build/reports/**/*.xml'
+            post {
+                success {
+                    junit 'target/surefire-reports/**/*.xml'
+                }
             }
         }
         stage ('Build') {
