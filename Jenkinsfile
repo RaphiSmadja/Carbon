@@ -1,14 +1,12 @@
 pipeline {
-    agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v $HOME/.m2:/root/.m2'
-        }
+    agent any
+    tools {
+        maven 'maven3.6.3'
     }
     stages {
-        stage('Build') {
+        stage ('Build') {
             steps {
-                bat 'mvn -B'
+                bat 'mvn clean install'
             }
         }
     }
