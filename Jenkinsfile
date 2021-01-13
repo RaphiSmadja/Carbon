@@ -5,23 +5,29 @@ pipeline {
         jdk 'jdk8'
     }
     stages {
-        stage ('Initialize') {
-            steps {
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                '''
-            }
-        }
-
         stage ('Build') {
             steps {
-                sh 'mvn -Dmaven.test.failure.ignore=true install'
+                echo 'Build...'
+                sh 'mvn install'
+                sh 'mvn -B -DskipTests clean package'
+
+            }
+        }
+        stage ('Test') {
+            steps {
+                echo 'Test...'
+                sh 'mvn test'
             }
             post {
-                success {
-                    junit 'target/surefire-reports/**/*.xml'
+                always {
+                    junit 'target/surefire-reports/*.xml'
                 }
+            }
+        }
+        stage ('Deploy') {
+            steps {
+                echo 'Deploy...'
+                sh 'mvn clean install'
             }
         }
     }
