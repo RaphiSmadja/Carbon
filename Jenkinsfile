@@ -1,13 +1,11 @@
 pipeline {
     agent any
-    tools {
-        maven 'maven3.6.3'
-    }
+
     stages {
-        stage ('Build') {
+        stage('Build') {
             steps {
-                bat echo 'Build...'
-                bat 'mvn clean install'
+                sh 'make'
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
             }
         }
     }
