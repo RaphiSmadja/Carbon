@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -12,47 +13,53 @@ public class Main {
         if (args.length != 1) {
             throw new Exception("you must pass a file as an args");
         } else {
-            try {
-                File file = new File(args[0]);
-                Scanner reader = new Scanner(file);
-                Object[][] carte = new Object[0][];
-                HashMap<String, Object> hashMap = new HashMap<>();
-                Object[] carteAndHashMap = new Object[2];
-
-                int axeH = 0;
-                int axeV = 0;
-                while (reader.hasNextLine()) {
-                    String data = reader.nextLine();
-                    // commentaire
-                    if (data.charAt(0) != '#') {
-                        String[] datas = data.split(" - ");
-
-                        // initialize carte
-                        if (datas[0].equals("C")) {
-                            axeH = Integer.parseInt(datas[1]);
-                            axeV = Integer.parseInt(datas[2]);
-                            carte = new Object[axeV][axeH];
-                            for (int i = 0; i < axeV; i++) {
-                                for (int j = 0; j < axeH; j++) {
-                                    carte[i][j] = ".";
-                                }
-                            }
-                        }
-                        carteAndHashMap = completeCarteAndHashMap(axeH, axeV, data, datas, carte, hashMap, carteAndHashMap);
-                    }
-                }
-                reader.close();
-                carte = (Object[][]) carteAndHashMap[0];
-                hashMap = (HashMap<String, Object>) carteAndHashMap[1];
-                displayCarte(axeH, axeV, carte);
-                moove(axeH, axeV, carte, hashMap);
-            } catch (FileNotFoundException exception) {
-                throw new RuntimeException("file not found");
-            }
+            Main main = new Main();
+            main.createGame(args);
         }
     }
 
-    private static Object[] completeCarteAndHashMap(int axeH, int axeV, String data, String[] datas, Object[][] carte,
+    protected Object[][] createGame(String[] args) {
+        try {
+            File file = new File(args[0]);
+            Scanner reader = new Scanner(file);
+            Object[][] carte = new Object[0][];
+            HashMap<String, Object> hashMap = new HashMap<>();
+            Object[] carteAndHashMap = new Object[2];
+            int axeH = 0;
+            int axeV = 0;
+
+            while (reader.hasNextLine()) {
+                String data = reader.nextLine();
+                // commentaire
+                if (data.charAt(0) != '#') {
+                    String[] datas = data.split(" - ");
+
+                    // initialize carte
+                    if (datas[0].equals("C")) {
+                        axeH = Integer.parseInt(datas[1]);
+                        axeV = Integer.parseInt(datas[2]);
+                        carte = new Object[axeV][axeH];
+                        for (int i = 0; i < axeV; i++) {
+                            for (int j = 0; j < axeH; j++) {
+                                carte[i][j] = ".";
+                            }
+                        }
+                    }
+                    carteAndHashMap = completeCarteAndHashMap(axeH, axeV, data, datas, carte, hashMap, carteAndHashMap);
+                }
+            }
+            reader.close();
+            carte = (Object[][]) carteAndHashMap[0];
+            hashMap = (HashMap<String, Object>) carteAndHashMap[1];
+            displayCarte(axeH, axeV, carte);
+            carte = moove(axeH, axeV, carte, hashMap);
+            return carte;
+        } catch (FileNotFoundException exception) {
+            throw new RuntimeException("file not found");
+        }
+    }
+
+    protected Object[] completeCarteAndHashMap(int axeH, int axeV, String data, String[] datas, Object[][] carte,
                                                     HashMap<String, Object> hashMap, Object[] carteAndHashMap) {
 
         boolean flag = false;
@@ -99,7 +106,7 @@ public class Main {
         return carteAndHashMap;
     }
 
-    public static void displayCarte(int axeH, int axeV, Object[][] carte) {
+    protected Object[][] displayCarte(int axeH, int axeV, Object[][] carte) {
         String str = "";
         for (int i = 0; i < axeV; i++) {
             for (int j = 0; j < axeH; j++) {
@@ -128,9 +135,10 @@ public class Main {
             }
             System.out.println();
         }
+        return carte;
     }
 
-    private static void moove(int axeH, int axeV, Object[][] carte, HashMap<String, Object> hashMap) {
+    protected Object[][] moove(int axeH, int axeV, Object[][] carte, HashMap<String, Object> hashMap) {
         Adventurer a1 = null;
         Object[][] copyCarte = Arrays.stream(carte).map(Object[]::clone).toArray(Object[][]::new);
 
@@ -200,7 +208,8 @@ public class Main {
         }
         fusionCarte(carte, copyCarte, axeH, axeV);
         try {
-            File myObj = new File("carte2.txt");
+            LocalDateTime now = LocalDateTime.now();
+            File myObj = new File("carte"+now.getHour()+now.getMinute()+now.getSecond()+".txt");
             if (myObj.createNewFile()) {
                 FileWriter myWriter = new FileWriter(myObj);
                 myWriter.write("C - " + axeH + " - " + axeV +"\n");
@@ -231,9 +240,10 @@ public class Main {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+        return copyCarte;
     }
 
-    private static void fusionCarte(Object[][] carte, Object[][] copyCarte, int axeH, int axeV) {
+    protected void fusionCarte(Object[][] carte, Object[][] copyCarte, int axeH, int axeV) {
         for (int i = 0; i < axeV; i++) {
             for (int j = 0; j < axeH; j++) {
                 if (carte[i][j].getClass() == Treasure.class) {
@@ -243,7 +253,7 @@ public class Main {
         }
     }
 
-    private static void turnRight(Adventurer a1) {
+    protected void turnRight(Adventurer a1) {
         switch (a1.getOrientation()) {
             case "N":
                 a1.setOrientation("E");
@@ -260,7 +270,7 @@ public class Main {
         }
     }
 
-    private static void turnLeft(Adventurer a1) {
+    protected void turnLeft(Adventurer a1) {
         switch (a1.getOrientation()) {
             case "N":
                 a1.setOrientation("O");
@@ -278,7 +288,7 @@ public class Main {
     }
 
 
-    private static boolean checkTresor(Adventurer a1, String futurOrientation, Object[][] carte) {
+    protected boolean checkTresor(Adventurer a1, String futurOrientation, Object[][] carte) {
         Treasure treasure = null;
         if (futurOrientation.equals("-1V")) {
             if (carte[a1.getAxeV() - 1][a1.getAxeH()].getClass().equals(Treasure.class)) {
@@ -324,7 +334,7 @@ public class Main {
         return true;
     }
 
-    private static boolean checkAdventuror(Adventurer a1, String futurOrientation, Object[][] copyCarte) {
+    protected boolean checkAdventuror(Adventurer a1, String futurOrientation, Object[][] copyCarte) {
         boolean canMoove = true;
         if (futurOrientation.equals("-1V")) {
             if (copyCarte[a1.getAxeV() - 1][a1.getAxeH()].getClass().equals(Mountain.class)) {
@@ -350,7 +360,7 @@ public class Main {
         return canMoove;
     }
 
-    private static boolean checkBorder(int axeH, int axeV, Adventurer a1, String futurOrientation) {
+    protected boolean checkBorder(int axeH, int axeV, Adventurer a1, String futurOrientation) {
         boolean canMoove = true;
         if (futurOrientation.equals("-1V")) {
             if (a1.getAxeV() - 1 < 0) {
@@ -358,7 +368,7 @@ public class Main {
             }
         }
         if (futurOrientation.equals("+1V")) {
-            if (a1.getAxeV() + 1 > axeV) {
+            if (a1.getAxeV() + 1 >= axeV) {
                 canMoove = false;
             }
         }
@@ -368,14 +378,14 @@ public class Main {
             }
         }
         if (futurOrientation.equals("+1H")) {
-            if (a1.getAxeH() + 1 > axeH) {
+            if (a1.getAxeH() + 1 >= axeH) {
                 canMoove = false;
             }
         }
         return canMoove;
     }
 
-    private static boolean checkMountain(Adventurer a1, String futurOrientation, Object[][] copyCarte) {
+    protected boolean checkMountain(Adventurer a1, String futurOrientation, Object[][] copyCarte) {
         boolean canMoove = true;
         if (futurOrientation.equals("-1V")) {
             if (copyCarte[a1.getAxeV() - 1][a1.getAxeH()].getClass().equals(Mountain.class)) {

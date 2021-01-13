@@ -1,0 +1,3 @@
+C - 4 - 4
+M - 0 - 0
+A - Bob - 1 - 1 - S - AAAAAAA

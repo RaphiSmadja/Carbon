@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Treasure {
     private int axeH;
     private int axeV;
@@ -31,5 +33,20 @@ public class Treasure {
 
     public void setNbTresor(int nbTresor) {
         this.nbTresor = nbTresor;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Treasure treasure = (Treasure) o;
+        return axeH == treasure.axeH &&
+                axeV == treasure.axeV &&
+                nbTresor == treasure.nbTresor;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(axeH, axeV, nbTresor);
     }
 }

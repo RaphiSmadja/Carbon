@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Adventurer {
     private String name;
     private int axeH;
@@ -61,5 +63,23 @@ public class Adventurer {
 
     public void setNbTreasures(int nbTreasures) {
         this.nbTreasures = nbTreasures;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Adventurer that = (Adventurer) o;
+        return axeH == that.axeH &&
+                axeV == that.axeV &&
+                nbTreasures == that.nbTreasures &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(orientation, that.orientation) &&
+                Objects.equals(motionSeq, that.motionSeq);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, axeH, axeV, orientation, motionSeq, nbTreasures);
     }
 }
