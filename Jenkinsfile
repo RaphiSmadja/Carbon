@@ -6,6 +6,7 @@ pipeline {
                 steps {
                     checkout scm
                     sh 'make'
+                    echo 'hello'
                     stash includes: '**/target/*.jar', name: 'app'
                 }
             }
