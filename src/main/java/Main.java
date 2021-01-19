@@ -337,23 +337,23 @@ public class Main {
     protected boolean checkAdventuror(Adventurer a1, String futurOrientation, Object[][] copyCarte) {
         boolean canMoove = true;
         if (futurOrientation.equals("-1V")) {
-            if (copyCarte[a1.getAxeV() - 1][a1.getAxeH()].getClass().equals(Mountain.class)) {
+            if (copyCarte[a1.getAxeV() - 1][a1.getAxeH()].getClass().equals(Adventurer.class)) {
                 canMoove = false;
             }
         }
         if (futurOrientation.equals("+1V")) {
-            if (copyCarte[a1.getAxeV() + 1][a1.getAxeH()].getClass().equals(Mountain.class)) {
+            if (copyCarte[a1.getAxeV() + 1][a1.getAxeH()].getClass().equals(Adventurer.class)) {
                 canMoove = false;
             }
         }
 
         if (futurOrientation.equals("-1H")) {
-            if (copyCarte[a1.getAxeV()][a1.getAxeH() - 1].getClass().equals(Mountain.class)) {
+            if (copyCarte[a1.getAxeV()][a1.getAxeH() - 1].getClass().equals(Adventurer.class)) {
                 canMoove = false;
             }
         }
         if (futurOrientation.equals("+1H")) {
-            if (copyCarte[a1.getAxeV()][a1.getAxeH() + 1].getClass().equals(Mountain.class)) {
+            if (copyCarte[a1.getAxeV()][a1.getAxeH() + 1].getClass().equals(Adventurer.class)) {
                 canMoove = false;
             }
         }

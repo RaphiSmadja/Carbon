@@ -3,10 +3,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class MainTest {
+class MainTest {
 
     @Test
-    public void should_return_exception_if_there_no_map() {
+    void should_return_exception_if_there_no_map() {
         //Given
         String[] args = new String[0];
         //When
@@ -16,7 +16,7 @@ public class MainTest {
     }
 
     @Test
-    public void should_return_exception_if_file_not_found() {
+    void should_return_exception_if_file_not_found() {
         //Given
         String[] args = {"test.txt"};
         Main main = new Main();
@@ -27,7 +27,7 @@ public class MainTest {
     }
 
     @Test
-    public void should_return_table_5_Lines_6_Collumns_if_C_5_6() {
+    void should_return_table_5_Lines_6_Collumns_if_C_5_6() {
         //Given
         String[] args = {"carteTest5-6.txt"};
         Main main = new Main();
@@ -47,7 +47,7 @@ public class MainTest {
     }
 
     @Test
-    public void adventure_should_do_not_exceed_the_limits_carte_4_4() {
+    void adventure_should_do_not_exceed_the_limits_carte_4_4() {
         //Given
         String[] args = {"carteTest4-4.txt"};
         int axeH = 4;
@@ -75,7 +75,7 @@ public class MainTest {
 
     }
     @Test
-    public void adventure_should_not_pass_mountain() {
+    void adventure_should_not_pass_mountain() {
         // Given
         String[] args = {"carteTest5-5.txt"};
         int axeH = 5;
@@ -101,7 +101,7 @@ public class MainTest {
                 () -> assertEquals(actual.length, axeH),
                 () -> assertEquals(actual[0].length, axeV),
                 () -> assertEquals(actual[2][1],treasure),
-                () -> assertTrue(adventurerExpected.getOrientation().equals("N")),
+                () -> assertEquals(adventurerExpected.getOrientation(),"N"),
                 () -> assertEquals(adventurerExpected.getNbTreasures(),1),
                 () -> assertTrue(actual[0][0].equals(expected[0][0])),
                 () -> assertTrue(actual[1][2].equals(expected[1][2]))
